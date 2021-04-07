@@ -12,7 +12,7 @@ Press to add xml and xlst file and press `Show file` to render it.
 
 You can use the [example.xml](example.xml) and [example.xsl](example.xls) files to try it.
 
-## License
+## License
 
 Licensed under [MIT](LICENSE.txt).
 
