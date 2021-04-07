@@ -4,6 +4,8 @@ This project is a teeny tiny stand alone html file that allows you to upload an 
 
 Enough said, this is how it looks/work:
 
+![Screencast of the page running locally](example.gif)
+
 ## Running it
 
 Simply open the `index.html`. Deploy it if you like but it runs anywhere.
