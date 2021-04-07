@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+<script>
+
+let xhttp;
+if (window.ActiveXObject)
+{
+    xhttp = new ActiveXObject("Msxml2.XMLHTTP");
+}
+else
+{
+    xhttp = new XMLHttpRequest();
+}
+
+function loadXMLDoc(filename) {
+    xhttp.open("GET", filename, false);
+    try {xhttp.responseType = "msxml-document"} catch(err) {} // Helping IE11
+    xhttp.send("");
+    return xhttp.responseXML;
+}
+
+let xml;
+let xsl;
+
+function displayResult()
+{  
+    console.log('xml = ' + xml)
+    console.log('xsl = ' + xsl)
+// xml = loadXMLDoc("7100001.xml");
+// xsl = loadXMLDoc("7100001.xsl");
+// code for IE
+if (window.ActiveXObject || xhttp.responseType == "msxml-document")
+  {
+  ex = xml.transformNode(xsl);
+  document.getElementById("example").innerHTML = ex;
+  }
+// code for Chrome, Firefox, Opera, etc.
+else if (document.implementation && document.implementation.createDocument)
+  {
+  xsltProcessor = new XSLTProcessor();
+  xsltProcessor.importStylesheet(xsl);
+  console.log(xml)
+  resultDocument = xsltProcessor.transformToFragment(xml, document);
+  document.getElementById("example").appendChild(resultDocument);
+  document.getElementById("setup").remove();
+  }
+}
+function uploadXml(event) {
+    onFileSelected(event, (doc) => xml = doc)
+}
+function uploadXsl(event) {
+    onFileSelected(event, (doc) => xsl = doc)
+}
+
+function onFileSelected(event, handle) {
+    var selectedFile = event.target.files[0];
+    var reader = new FileReader();
+  
+    var result = document.getElementById("result");
+  
+    reader.onload = function(event) {
+        parser = new DOMParser();
+        xmlDoc = parser.parseFromString(event.target.result,"text/xml");
+        handle(xmlDoc);
+    };
+  
+    reader.readAsText(selectedFile);
+  }
+
+
+</script>
+</head>
+
+<div id="setup">
+    <p>
+<label>XML　ファイル</label>
+<input type="file" onchange="uploadXml(event)">
+</p>
+<p>
+<label>XSL ファイル</label>
+<input type="file" onchange="uploadXsl(event)">
+</p>
+<p>
+<button onclick="displayResult()">実行</button>
+</p>
+</div>
+<div id="example" />
+</body>
+</html>
